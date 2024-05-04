@@ -25,7 +25,7 @@ public class PhaseManager : MonoBehaviour
     public bool timeType;
 
     [Header("Dash Type")]
-    public GameObject Player;
+    private GameObject Player;
     Movement playerMovement;
     PlayerInput playerInput;
     InputAction toggleAction;
@@ -57,12 +57,13 @@ public class PhaseManager : MonoBehaviour
     void Start()
     {
         // Player
+        Player = GameManager.Instance.player;
         playerMovement = Player.GetComponent<Movement>();
         playerInput = Player.GetComponent<PlayerInput>();
         toggleAction = playerInput.actions["Phase"];
 
         // UI
-        timerUI.GetComponent<TextMeshProUGUI>().text = "0";
+        if (timerUI) timerUI.GetComponent<TextMeshProUGUI>().text = "0";
         CurrentPhase = !TargetPhase;
         StartingPhase = !TargetPhase;
     }
@@ -94,7 +95,7 @@ public class PhaseManager : MonoBehaviour
         if (timer > Time.time)
         {
             timeLeft = timer - Time.time;
-            timerUI.text = timeLeft.ToString();
+            if (timerUI) timerUI.text = timeLeft.ToString();
             if (timeType)
             {
                 TimedChanger();
